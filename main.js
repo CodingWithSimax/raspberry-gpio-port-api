@@ -5,8 +5,26 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+const activePorts = {};
+
 app.post("/api/update", bodyParser.json(), (req, res) => {
-    console.log("got request: ", req.body);
+    switch(req.body.type) {
+        case "reset": {
+            Object.keys(this.activePorts).forEach(key => {
+                const gpio = this.activePorts[key];
+                gpio.unexport();
+            })
+            break;
+        }
+        case "setupGPIO": {
+            this.activePorts[req.body.port] = new GPIO(req.body.port, ...req.body.args);
+            break;
+        }
+        case "executeGPIOCommand": {
+            this.activePorts[req.body.port][req.body.commandName](...req.body.args);
+            break;
+        }
+    }
 });
 
 app.listen(3000, () => {});
