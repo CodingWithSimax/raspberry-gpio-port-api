@@ -15,14 +15,17 @@ app.post("/api/update", bodyParser.json(), (req, res) => {
                 gpio.unexport();
             })
             activePorts = [];
+            res.json({success: "success"});
             break;
         }
         case "setupGPIO": {
             activePorts[req.body.port] = new GPIO(req.body.port, ...req.body.args);
+            res.json({success: "success"});
             break;
         }
         case "executeGPIOCommand": {
             activePorts[req.body.port][req.body.commandName](...req.body.args);
+            res.json({success: "success"});
             break;
         }
     }
