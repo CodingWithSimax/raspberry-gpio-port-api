@@ -24,7 +24,11 @@ app.post("/api/update", bodyParser.json(), (req, res) => {
             break;
         }
         case "executeGPIOCommand": {
-            activePorts[req.body.port][req.body.commandName](...req.body.args);
+            const result = activePorts[req.body.port][req.body.commandName](...req.body.args);
+            if (req.body.doReturnResult) {
+                res.json({success: "success", result: result});
+                return;
+            }
             res.json({success: "success"});
             break;
         }
