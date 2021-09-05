@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-app.get("/api/update", bodyParser.json(), (req, res) => {
+app.post("/api/update", bodyParser.json(), (req, res) => {
     console.log("got request: ", req.body);
 });
 
