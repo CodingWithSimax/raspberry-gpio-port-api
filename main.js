@@ -10,18 +10,19 @@ const activePorts = {};
 app.post("/api/update", bodyParser.json(), (req, res) => {
     switch(req.body.type) {
         case "reset": {
-            Object.keys(this.activePorts).forEach(key => {
-                const gpio = this.activePorts[key];
+            Object.keys(activePorts).forEach(key => {
+                const gpio = activePorts[key];
                 gpio.unexport();
             })
+            activePorts = [];
             break;
         }
         case "setupGPIO": {
-            this.activePorts[req.body.port] = new GPIO(req.body.port, ...req.body.args);
+            activePorts[req.body.port] = new GPIO(req.body.port, ...req.body.args);
             break;
         }
         case "executeGPIOCommand": {
-            this.activePorts[req.body.port][req.body.commandName](...req.body.args);
+            activePorts[req.body.port][req.body.commandName](...req.body.args);
             break;
         }
     }
